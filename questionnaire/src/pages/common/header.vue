@@ -1,18 +1,20 @@
 <template>
-  <div class="home-header">
+  <div class="common-header">
       <span class="header-logo header-lr">微型问卷管理平台</span>
-      <span class="home-header-login header-lr" >登陆</span>
+      <slot></slot>
   </div>
 </template>
 
 <script>
+
 export default {
-    name:'HomeHeader'
+    name:'CommonHeader',
+    
 }
 </script>
 
 <style scoped>
-.home-header{
+.common-header{
     position: relative;
     overflow: hidden;
     height: 60px;
@@ -24,9 +26,6 @@ export default {
     color:#fff;
     font-size: 1.2em;
     position: absolute;
-}
-.home-header-login{
-    right:1.5em;
 }
 .header-logo{
     padding-left:2em;

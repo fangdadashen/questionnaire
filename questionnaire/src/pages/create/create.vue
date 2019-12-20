@@ -1,18 +1,22 @@
 <template>
   <div>
-      <home-header></home-header>
-      <home-sidecolumn></home-sidecolumn>
+      <common-header>
+          <common-back></common-back>
+      </common-header>
+      <common-sidecolumn></common-sidecolumn>
   </div>
 </template>
 
 <script>
-import HomeHeader from '../home/component/header.vue'
-import HomeSidecolumn from '../home/component/sidecolumn.vue'
+import CommonHeader from '../common/header.vue'
+import CommonSidecolumn from '../common/sidecolumn.vue'
+import CommonBack from '../common/back.vue'
 export default {
     name:'Create',
     components:{
-        HomeHeader,
-        HomeSidecolumn,
+        CommonHeader,
+        CommonSidecolumn,
+        CommonBack
     },
 }
 </script>

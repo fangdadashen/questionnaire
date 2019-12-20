@@ -1,32 +1,28 @@
 <template>
   <div>
-      <home-header></home-header>
-      <home-sidecolumn @createnew='HandleCreatalist'></home-sidecolumn>
-      <home-list :listshow='listshow'></home-list>
+      <common-header>
+          <login></login>
+      </common-header>
+      <common-sidecolumn></common-sidecolumn>
+      <home-list></home-list>
   </div>
 </template>
 
 <script>
-import HomeHeader from './component/header'
-import HomeSidecolumn from './component/sidecolumn'
+import CommonHeader from '../common/header.vue'
+import CommonSidecolumn from '../common/sidecolumn.vue'
 import HomeList from './component/list'
+import login from '../common/login.vue'
+
 export default {
     name:'Home',
     components:{
-        HomeHeader,
-        HomeSidecolumn,
-        HomeList
+        CommonHeader,
+        CommonSidecolumn,
+        HomeList,
+        login
     },
-    data(){
-        return{
-            listshow:''
-        }
-    },
-    methods:{
-        HandleCreatalist(msg){
-            this.listshow=msg;
-        }
-    }
+   
 }
 </script>
 

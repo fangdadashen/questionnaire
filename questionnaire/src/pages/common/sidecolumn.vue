@@ -1,12 +1,12 @@
 <template>
-  <div class="home-side">
-      <div class="side-one" @click="HandleClickNew2">
+  <div class="common-side">
+      <div class="side-one" @click='HandleClickSideChanage'>
           <p>
               <span class="iconfont side-icon">&#xe606;</span>
               我的问卷
           </p>
       </div>
-      <div class="side-one" @click="HandleClickNew">
+      <div class="side-one" @click='HandleClickSideChanage2'>
           <p>
               <span class="iconfont side-icon">&#xe631;</span>
               新建问卷
@@ -17,22 +17,21 @@
 
 <script>
 export default {
-    name:'HomeSidecolumn',
+    name:'CommonSidecolumn',
     methods:{
-        HandleClickNew(){//点击侧栏控制list组件相关图标的显示和隐藏
-            this.$emit('createnew',false)
+        HandleClickSideChanage(){//点击'我的问卷'的图标显现
+            this.$store.commit('ChangeSide',true)
         },
-        HandleClickNew2(){
-            this.$emit('createnew',true)
+        HandleClickSideChanage2(){//点击'新建问卷'的图标显现
+            this.$store.commit('ChangeSide',false)
         }
     }
 }
 </script>
 
 <style scoped>
-.home-side{
-
-    min-width: 150px;
+.common-side{
+    min-width: 120px;
     width:18%;
     position: absolute;
     top:60px;

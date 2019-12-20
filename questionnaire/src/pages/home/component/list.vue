@@ -19,13 +19,10 @@
 <script>
 export default {
     name:'HomeList',
-    props:{
-        listshow:Boolean
-    },
-    data(){
-        return{
-            listcreate:this.listshow
-        }
+    computed:{
+      listshow(){
+        return this.$store.state.SideChange
+      }
     }
 }
 </script>
