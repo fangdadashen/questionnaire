@@ -31,7 +31,7 @@ export default {
 
 <style scoped>
 .common-side{
-    min-width: 120px;
+    /* min-width: 120px; */
     width:18%;
     position: absolute;
     top:60px;
