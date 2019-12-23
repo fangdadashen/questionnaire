@@ -2,8 +2,8 @@
   <div class='add-con'>
       <div 
         class="add-info-warrper" 
-        v-for="item of single" 
-        :key="item.id"
+        v-for="(item,index) of single" 
+        :key="index"
       >
           <div class="add-title-wrapper">
               QT:
@@ -11,10 +11,10 @@
           </div>
         <div class="info-icon-show">
           <div class="info-icon">
-            <div class="iconfont add-info-icon" >&#xe632;</div>
-            <div class="iconfont add-info-icon" >&#xe600;</div>
-            <div class="iconfont add-info-icon" >&#xe60e;</div>
-            <div class="iconfont add-info-icon" @click='RemoveChangeSingleList(item.id)'>&#xe8d0;</div>
+            <div class="iconfont add-info-icon" title="上移" @click='UpChangeSingleList(item.id)'>&#xe632;</div>
+            <div class="iconfont add-info-icon" title="下移" @click='DownChangeSingleList(item.id)'>&#xe600;</div>
+            <div class="iconfont add-info-icon" title="复用" @click="CopyChangeSingleList(item.id)">&#xe60e;</div>
+            <div class="iconfont add-info-icon" title="删除" @click='RemoveChangeSingleList(item.id)'>&#xe8d0;</div>
           </div>
         </div>
           <div class="info-change-list">
@@ -32,9 +32,9 @@
                     type="text"
                     class="change-list"
                   >
-                <span class="iconfont listicon" @click="HandleClickUp">&#xe60a;</span>
-                <span class="iconfont listicon">&#xe602;</span>
-                <span class="iconfont listicon" @click="HandleClickRemoveList(index,item.changelist)">&#xe60b;</span>
+                <span class="iconfont listicon" @click.prevent.stop="HandleClickUp(index,item.changelist)">&#xe60a;</span>
+                <span class="iconfont listicon" @click.prevent.stop="HandleClickDown(index,item.changelist)">&#xe602;</span>
+                <span class="iconfont listicon" @click.prevent.stop="HandleClickRemoveList(index,item.changelist)">&#xe60b;</span>
               </label>
             </div>
             <div class="add-changelist-button" @click="HandleClickAddList(item.changelist)">
@@ -71,6 +71,7 @@ export default {
             //创建单选题
             single:[
                 {
+                    sid:'1',
                     id:'1',
                     title:'题目1',
                     changelist:[
@@ -117,6 +118,30 @@ export default {
         RemoveChangeSingleList(id){
             this.single.splice(id,1);
         },
+        //指定某个单选题选项上移
+        UpChangeSingleList(id){
+             if(id==0){
+                return false;
+            }else{
+                this.single.splice(id-1,0,this.single[id]);
+                this.single.splice(id+1,1);
+            }
+        },
+        //指定某个单选题选项下移
+        DownChangeSingleList(id){
+            if(id>=10||id==this.single.length-1){
+                return false;
+            }else{
+               this.single.splice(id+2,0,this.single[id]);
+               this.single.splice(id,1);
+            }
+        },
+        //复用某个单选题
+        CopyChangeSingleList(id){
+            let index=this.single[id]
+            index=Object.assign({},index);//不这样写会无限循环，即便如此id还是重复了
+            this.single.splice(id+1,0,index);
+        },
         //创建内部选项
         HandleClickAddList(list){
             if(!(list.length==this.infolistid)){
@@ -136,8 +161,22 @@ export default {
             list.splice(index,1)
         },
         //内部选项上移
-        HandleClickUp(){
-
+        HandleClickUp(index,list){
+            if(index==0){
+                return false;
+            }else{
+                list.splice(index-1,0,list[index]);
+                list.splice(index+1,1);
+            }
+        },
+        //内部选项下移
+        HandleClickDown(index,list){
+            if(index>=10||index==list.length-1){
+                return false;
+            }else{
+                list.splice(index+2,0,list[index]);
+                list.splice(index,1);
+            }
         }
     },
     watch:{
