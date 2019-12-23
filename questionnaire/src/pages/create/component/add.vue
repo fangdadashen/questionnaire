@@ -1,17 +1,63 @@
 <template>
   <div class='add-con'>
+      <div 
+        class="add-info-warrper" 
+        v-for="item of single" 
+        :key="item.id"
+      >
+          <div class="add-title-wrapper">
+              QT:
+              <input class="info-title" type="text" v-model="item.title">
+          </div>
+        <div class="info-icon-show">
+          <div class="info-icon">
+            <div class="iconfont add-info-icon" >&#xe632;</div>
+            <div class="iconfont add-info-icon" >&#xe600;</div>
+            <div class="iconfont add-info-icon" >&#xe60e;</div>
+            <div class="iconfont add-info-icon" @click='RemoveChangeSingleList(item.id)'>&#xe8d0;</div>
+          </div>
+        </div>
+          <div class="info-change-list">
+            <div class="listiconshow" v-for="(list,index) of item.changelist" :key="index">
+              <label for="list.inid" class="listlabel">
+                  <input 
+                    type="radio" 
+                    id="list.inid"
+                    name="change-one"
+                    :value="list.value"
+                    @click="HandleRadio"
+                  >
+                  <input 
+                    v-model="list.value"
+                    type="text"
+                    class="change-list"
+                  >
+                <span class="iconfont listicon" @click="HandleClickUp">&#xe60a;</span>
+                <span class="iconfont listicon">&#xe602;</span>
+                <span class="iconfont listicon" @click="HandleClickRemoveList(index,item.changelist)">&#xe60b;</span>
+              </label>
+            </div>
+            <div class="add-changelist-button" @click="HandleClickAddList(item.changelist)">
+                <span class="iconfont">&#xe631;</span>
+              添加选项
+            </div>
+          </div>
+      </div>
       <div class="select-wrapper">
           <div class="add-explain">
-           
-            添加问题:
+              添加问题:
           </div>
-          <div
-            class="select-button" 
-            v-for="item of addlist" 
-            :key="item.id"
-          >
-              <span class="iconfont">{{item.icon}}</span>
-              {{item.content}}
+          <div class="select-button" @click="CreateChangeSingleList">
+              <span class="iconfont">&#xe607;</span>
+              单选题
+          </div>
+          <div class="select-button">
+              <span class="iconfont">&#xe607;</span>
+              多选题
+          </div>
+          <div class="select-button">
+              <span class="iconfont">&#xe607;</span>
+              文本题
           </div>
       </div>
   </div>
@@ -22,13 +68,100 @@ export default {
     name:'CreateAdd',
     data(){
         return{
-            addlist:[
-                {id:'001',content:'单选题',icon:'\ue607'},
-                {id:'002',content:'多选题',icon:'\ue608'},
-                {id:'003',content:'文本题',icon:'\ue679'}
+            //创建单选题
+            single:[
+                {
+                    id:'1',
+                    title:'题目1',
+                    changelist:[
+                        {inid:'1',value:'选项1'},
+                        {inid:'2',value:'选项2'}
+                    ],
+                },
+                {
+                    id:'2',
+                    title:'题目2',
+                    changelist:[
+                        {inid:'1',value:'选项1'},
+                        {inid:'2',value:'选项2'}
+                    ],
+                }
             ],
+            singleid:1,
+            singletitle:'题目',
+            timer:null,
+            infolistid:2,
+            infolistval:'选项'
         }
     },
+    methods:{
+        HandleRadio(e){
+            window.console.log(e.target.value)
+        },
+        //创建一个新单选题
+        CreateChangeSingleList(){
+            let changelist=[{inid:'1',value:'选项1'},{inid:'2',value:'选项2'}];
+            if(this.single.length<=0){
+                this.singleid='1'
+            }
+            else if(!(this.single.length==this.singleid)){
+                this.singleid=this.single.length+1;
+            }
+            this.single.push({
+                id:this.singleid++,
+                title:this.singletitle+(this.singleid-1),
+                changelist:changelist
+            })
+        },
+        // //删除指定单选题
+        RemoveChangeSingleList(id){
+            this.single.splice(id,1);
+        },
+        //创建内部选项
+        HandleClickAddList(list){
+            if(!(list.length==this.infolistid)){
+                this.infolistid=list.length;
+            }
+            if(list.length<10){
+            list.push({
+                id:this.infolistid++,
+                value:this.infolistval+(this.infolistid)
+                })
+            }else{
+                alert('最多只能创建10个选项哦')
+            }
+        },
+        //删除指定内部选项
+        HandleClickRemoveList(index,list){
+            list.splice(index,1)
+        },
+        //内部选项上移
+        HandleClickUp(){
+
+        }
+    },
+    watch:{
+        //侦听single数组
+        single: {
+          handler() {
+            if(this.timer){//提升性能
+                clearTimeout(this.timer)
+            }
+            this.timer=setTimeout(()=>{
+                this.single.forEach((val,index) => {
+                    val.id=index;
+                })  
+                localStorage.setItem('single',JSON.stringify(this.single))
+            },100)
+          },
+          // 开启深度监听
+          deep: true
+        }
+    },
+    created(){
+        //页面加载或刷新时把存在本地的数据赋予
+       this.single=JSON.parse(localStorage.getItem('single'));
+    }
 }
 </script>
 
@@ -38,7 +171,7 @@ export default {
     padding:10px 0;
     border-top:1px solid #e1e1e1;
     border-bottom:1px solid #e1e1e1;
-    
+    overflow: hidden;
 }
 .add-explain{
     height: 20px;
@@ -46,11 +179,17 @@ export default {
     font-size: 1.2em;
     margin-right:2em;
 }
+@media screen and (max-width:500px){
+        .add-explain{
+            display: none;
+        }
+    }
 .add-explain>span{
     vertical-align: middle;
     font-size: 1.2em;
 }
 .select-wrapper{
+    /* min-width:350px; */
     background: #fff;
     text-align:center;
     display: flex;
@@ -65,6 +204,7 @@ export default {
     border:1px solid black;
     border-radius: 5px;
     width: 8%;
+    min-width:70px;
     height: 20px;
     line-height: 20px;
     margin-right:5px;
@@ -74,5 +214,91 @@ export default {
     color: #fff;
     cursor: pointer;
 }
-
+.add-info-warrper{
+    padding:10px;
+    margin-bottom: 5px;
+    min-width:350px;
+    min-height:180px;
+}
+.add-con .add-info-warrper:hover{ 
+    box-shadow: 1px 1px 2px 2px #eee;
+}
+.add-title-wrapper{
+    font-size: 1.2em;
+    margin-bottom:5px;
+}
+.add-title-wrapper .info-title{
+    box-sizing: border-box;
+    width: 90%;
+    height: 30px;
+    padding:3px 5px;
+    color:rgb(151, 148, 148);
+    border-radius: 3px;
+    /* background: #eee; */
+}
+.add-title-wrapper .info-title:hover{
+    background: rgba(255, 68, 0, 0.158);
+    border:1px solid #31708f;
+}
+.info-icon-show{
+    width:2em;
+    vertical-align:top;
+    display: inline-block;
+}
+.info-icon{
+    width:2em;
+    display: none;
+    vertical-align:top;
+}
+.add-info-warrper:hover .info-icon{
+    display: inline-block;
+}
+.add-info-icon{
+    padding-bottom: 15px;
+    width:27px;
+    font-size: 18px;
+    cursor: pointer;
+}
+.add-info-icon:hover{
+    color:#018fe5 ;
+}
+.add-info-warrper .info-change-list{
+    /* background: red; */
+    display: inline-block;
+    width:85%;
+}
+.info-change-list .change-list{
+    box-sizing: border-box;
+    width:90%;
+    padding:0 3px;
+    border-radius: 3px;
+    color:rgb(151, 148, 148);
+    margin-bottom:3px;
+    height: 30px;
+}
+.info-change-list .change-list:hover{
+    background: rgba(255, 68, 0, 0.158);
+    border:1px solid #31708f;
+}
+.info-change-list .add-changelist-button{
+    padding:15px 10px;
+    font-size: 1.2em;
+    color:rgb(151, 148, 148);
+    cursor: pointer;
+}
+.add-changelist-button:hover{
+    color:#a94442;
+}
+.listicon{
+    color: #018fe5;
+    display:none;
+    vertical-align: middle;
+    text-align: right;
+    font-size:1.3em;
+    margin-left:2px;
+    cursor:pointer;
+}
+.listiconshow:hover .listicon{
+    display: inline-block;
+}
 </style>

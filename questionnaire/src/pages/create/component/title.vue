@@ -1,12 +1,29 @@
 <template>
   <div class="title-con">
-      <input type="text" value="问卷题目" class="title-int">
+      <input v-model="Qtitle" type="text" class="title-int">
   </div>
 </template>
 
 <script>
 export default {
-    name:'QuestionTitle'
+    name:'QuestionTitle',
+    data(){
+        return{
+            Qtitle:'问卷题目'
+        }
+    },
+    watch:{
+        Qtitle:{
+            handler(){
+                localStorage.setItem('Qtitle',JSON.stringify(this.Qtitle))
+            },
+            //第一次初始化就监听
+            immediate:true
+        }
+    },
+    created(){
+        this.Qtitle=JSON.parse(localStorage.getItem('Qtitle'));
+    }
 }
 </script>
 

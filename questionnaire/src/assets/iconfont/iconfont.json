@@ -34,13 +34,6 @@
       "unicode_decimal": 58894
     },
     {
-      "icon_id": "2536710",
-      "name": "方向 - 下",
-      "font_class": "down",
-      "unicode": "e602",
-      "unicode_decimal": 58882
-    },
-    {
       "icon_id": "3058790",
       "name": "方向",
       "font_class": "left-arrow",
@@ -53,6 +46,13 @@
       "font_class": "chuangjian",
       "unicode": "e605",
       "unicode_decimal": 58885
+    },
+    {
+      "icon_id": "4215718",
+      "name": "上",
+      "font_class": "shang",
+      "unicode": "e632",
+      "unicode_decimal": 58930
     },
     {
       "icon_id": "4288335",
@@ -90,6 +90,13 @@
       "unicode_decimal": 58912
     },
     {
+      "icon_id": "6402605",
+      "name": "长箭头",
+      "font_class": "top",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
       "icon_id": "6548100",
       "name": "单选选中",
       "font_class": "radio-checked",
@@ -104,11 +111,25 @@
       "unicode_decimal": 58886
     },
     {
+      "icon_id": "6658294",
+      "name": "长箭头",
+      "font_class": "top1",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
       "icon_id": "8493556",
       "name": "删 除",
       "font_class": "shanchu",
       "unicode": "e8d0",
       "unicode_decimal": 59600
+    },
+    {
+      "icon_id": "10597042",
+      "name": "叉",
+      "font_class": "iconfontcha",
+      "unicode": "e60b",
+      "unicode_decimal": 58891
     }
   ]
 }
