@@ -1,16 +1,16 @@
 <template>
   <div class="common-side">
       <div class="side-one" @click='HandleClickSideChanage'>
-          <p>
+          <!-- <p> -->
               <span class="iconfont side-icon">&#xe606;</span>
               我的问卷
-          </p>
+          <!-- </p> -->
       </div>
       <div class="side-one" @click='HandleClickSideChanage2'>
-          <p>
+          <!-- <p> -->
               <span class="iconfont side-icon">&#xe631;</span>
               新建问卷
-          </p>
+          <!-- </!-->
       </div>
   </div>
 </template>

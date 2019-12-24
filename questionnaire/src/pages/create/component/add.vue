@@ -19,7 +19,7 @@
         </div>
           <div class="info-change-list">
             <div class="listiconshow" v-for="(list,index) of item.changelist" :key="index">
-              <label for="list.inid" class="listlabel">
+              <label for="list.inid" v-if="item.type==1">
                   <input 
                     type="radio" 
                     id="list.inid"
@@ -36,6 +36,38 @@
                 <span class="iconfont listicon" @click.prevent.stop="HandleClickDown(index,item.changelist)">&#xe602;</span>
                 <span class="iconfont listicon" @click.prevent.stop="HandleClickRemoveList(index,item.changelist)">&#xe60b;</span>
               </label>
+              <label for="list.inid" class="listlabel" v-else-if="item.type==2">
+                  <input 
+                    type="checkbox" 
+                    id="list.inid"
+                    name="change-one"
+                    :value="list.value"
+                    @click="HandleRadio"
+                  >
+                  <input 
+                    v-model="list.value"
+                    type="text"
+                    class="change-list"
+                  >
+                <span class="iconfont listicon" @click.prevent.stop="HandleClickUp(index,item.changelist)">&#xe60a;</span>
+                <span class="iconfont listicon" @click.prevent.stop="HandleClickDown(index,item.changelist)">&#xe602;</span>
+                <span class="iconfont listicon" @click.prevent.stop="HandleClickRemoveList(index,item.changelist)">&#xe60b;</span>
+              </label>
+              <div v-else-if="item.type==3">
+                <textarea 
+                  class="textarea" 
+                  v-model="list.textareavalue"
+                >
+                </textarea>
+                <label class="required">
+                    <input 
+                      @click="HandleChecked" 
+                      type="checkbox" 
+                      v-model=list.value
+                    >
+                    <span>是否必填</span>
+                </label>
+              </div>
             </div>
             <div class="add-changelist-button" @click="HandleClickAddList(item.changelist)">
                 <span class="iconfont">&#xe631;</span>
@@ -47,15 +79,15 @@
           <div class="add-explain">
               添加问题:
           </div>
-          <div class="select-button" @click="CreateChangeSingleList">
+          <div class="select-button" @click="changetype">
               <span class="iconfont">&#xe607;</span>
               单选题
           </div>
-          <div class="select-button">
+          <div class="select-button" @click="changetype">
               <span class="iconfont">&#xe607;</span>
               多选题
           </div>
-          <div class="select-button">
+          <div class="select-button" @click="changetype">
               <span class="iconfont">&#xe607;</span>
               文本题
           </div>
@@ -70,55 +102,104 @@ export default {
         return{
             //创建单选题
             single:[
-                {
-                    sid:'1',
-                    id:'1',
-                    title:'题目1',
-                    changelist:[
-                        {inid:'1',value:'选项1'},
-                        {inid:'2',value:'选项2'}
-                    ],
-                },
-                {
-                    id:'2',
-                    title:'题目2',
-                    changelist:[
-                        {inid:'1',value:'选项1'},
-                        {inid:'2',value:'选项2'}
-                    ],
-                }
+                // {
+                //     id:'1',
+                //     title:'题目1',
+                //     type:'1',
+                //     changelist:[
+                //         {inid:'1',value:'选项1'},
+                //         {inid:'2',value:'选项2'}
+                //     ],
+                // },
+                // {
+                //     id:'2',
+                //     title:'题目2',
+                //     type:'2',
+                //     changelist:[
+                //         {inid:'1',value:'选项1'},
+                //         {inid:'2',value:'选项2'}
+                //     ],
+                // },
+                // {
+                //     id:'3',
+                //     title:'题目2',
+                //     type:'3',
+                //     changelist:[
+                //         {textareavalue:'',value:[]},
+                //     ],
+                // }
             ],
             singleid:1,
             singletitle:'题目',
+            listtype:'',
             timer:null,
             infolistid:2,
-            infolistval:'选项'
+            infolistval:'选项',
+            checked:''
         }
     },
     methods:{
         HandleRadio(e){
             window.console.log(e.target.value)
         },
-        //创建一个新单选题
-        CreateChangeSingleList(){
-            let changelist=[{inid:'1',value:'选项1'},{inid:'2',value:'选项2'}];
+        //指定type类型
+        changetype(e){
+            window.console.log(456)
+            if(e.target.innerText.indexOf('单')>-1){
+                this.listtype=1;
+                this.CreateChangeSingleList()
+            }else if(e.target.innerText.indexOf('多')>-1){
+                this.listtype=2;
+                this.CreateChangeSingleList()
+            }else{
+                this.listtype=3;
+                this.CreateChangeTextareaList()
+            }
+        },
+        //整理排序
+        sorted(){
             if(this.single.length<=0){
                 this.singleid='1'
             }
             else if(!(this.single.length==this.singleid)){
                 this.singleid=this.single.length+1;
             }
+        },
+        //创建一个新单/多选题
+        CreateChangeSingleList(){
+            window.console.log(123)
+            this.sorted();
+            let changelist=[{inid:'1',value:'选项1'},{inid:'2',value:'选项2'}];
             this.single.push({
                 id:this.singleid++,
                 title:this.singletitle+(this.singleid-1),
+                type:this.listtype,
                 changelist:changelist
             })
         },
-        // //删除指定单选题
+        //判断文本题是否必填
+        HandleChecked(e){
+            if(e.target.checked){
+                this.checked='必填'
+                window.console.log(this.checked);
+            }
+        },
+        //创建一个新文本选题
+        CreateChangeTextareaList(){
+            this.sorted();
+            let changelist=[{textareavalue:'',value:this.checked}];
+            this.single.push({
+                id:this.singleid++,
+                title:this.singletitle+(this.singleid-1),
+                type:this.listtype,
+                changelist:changelist
+            })
+        },
+        // //删除指定选题
         RemoveChangeSingleList(id){
             this.single.splice(id,1);
         },
-        //指定某个单选题选项上移
+        //指定某个选题选项上移
         UpChangeSingleList(id){
              if(id==0){
                 return false;
@@ -127,7 +208,7 @@ export default {
                 this.single.splice(id+1,1);
             }
         },
-        //指定某个单选题选项下移
+        //指定某个选题选项下移
         DownChangeSingleList(id){
             if(id>=10||id==this.single.length-1){
                 return false;
@@ -136,7 +217,7 @@ export default {
                this.single.splice(id,1);
             }
         },
-        //复用某个单选题
+        //复用某个选题
         CopyChangeSingleList(id){
             let index=this.single[id]
             index=Object.assign({},index);//不这样写会无限循环，即便如此id还是重复了
@@ -339,5 +420,17 @@ export default {
 }
 .listiconshow:hover .listicon{
     display: inline-block;
+}
+.textarea{
+    border: 1px solid ;
+    width:90%;
+    height: 100px;
+    border-radius: 3px;
+}
+.textarea:hover{
+    background: rgba(255, 68, 0, 0.158);
+}
+.required{
+    display: block;
 }
 </style>
