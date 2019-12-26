@@ -102,32 +102,32 @@ export default {
         return{
             //创建单选题
             single:[
-                // {
-                //     id:'1',
-                //     title:'题目1',
-                //     type:'1',
-                //     changelist:[
-                //         {inid:'1',value:'选项1'},
-                //         {inid:'2',value:'选项2'}
-                //     ],
-                // },
-                // {
-                //     id:'2',
-                //     title:'题目2',
-                //     type:'2',
-                //     changelist:[
-                //         {inid:'1',value:'选项1'},
-                //         {inid:'2',value:'选项2'}
-                //     ],
-                // },
-                // {
-                //     id:'3',
-                //     title:'题目2',
-                //     type:'3',
-                //     changelist:[
-                //         {textareavalue:'',value:[]},
-                //     ],
-                // }
+                {
+                    id:'1',
+                    title:'题目1',
+                    type:'1',
+                    changelist:[
+                        {inid:'1',value:'选项1'},
+                        {inid:'2',value:'选项2'}
+                    ],
+                },
+                {
+                    id:'2',
+                    title:'题目2',
+                    type:'2',
+                    changelist:[
+                        {inid:'1',value:'选项1'},
+                        {inid:'2',value:'选项2'}
+                    ],
+                },
+                {
+                    id:'3',
+                    title:'题目2',
+                    type:'3',
+                    changelist:[
+                        {textareavalue:'',value:[]},
+                    ],
+                }
             ],
             singleid:1,
             singletitle:'题目',
@@ -270,17 +270,20 @@ export default {
             this.timer=setTimeout(()=>{
                 this.single.forEach((val,index) => {
                     val.id=index;
-                })  
-                localStorage.setItem('single',JSON.stringify(this.single))
+                })
+                let single='single'+this.$route.params.id;
+                localStorage.setItem(single,JSON.stringify(this.single))
             },100)
           },
           // 开启深度监听
-          deep: true
+          deep: true,
+          immediate:true
         }
     },
-    created(){
+    mounted(){
         //页面加载或刷新时把存在本地的数据赋予
-       this.single=JSON.parse(localStorage.getItem('single'));
+        let id='single'+this.$route.params.id;
+       this.single=JSON.parse(localStorage.getItem(id))||[];
     }
 }
 </script>

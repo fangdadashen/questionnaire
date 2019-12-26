@@ -15,14 +15,16 @@ export default {
     watch:{
         Qtitle:{
             handler(){
-                localStorage.setItem('Qtitle',JSON.stringify(this.Qtitle))
+                let Qtitle='Qtitle'+this.$route.params.id;
+                localStorage.setItem(Qtitle,JSON.stringify(this.Qtitle))
             },
             //第一次初始化就监听
             immediate:true
         }
     },
-    created(){
-        this.Qtitle=JSON.parse(localStorage.getItem('Qtitle'));
+    mounted(){
+        let id='Qtitle'+this.$route.params.id;
+        this.Qtitle=JSON.parse(localStorage.getItem(id));
     }
 }
 </script>
