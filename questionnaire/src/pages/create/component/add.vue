@@ -144,7 +144,6 @@ export default {
         },
         //指定type类型
         changetype(e){
-            window.console.log(456)
             if(e.target.innerText.indexOf('单')>-1){
                 this.listtype=1;
                 this.CreateChangeSingleList()
@@ -167,7 +166,6 @@ export default {
         },
         //创建一个新单/多选题
         CreateChangeSingleList(){
-            window.console.log(123)
             this.sorted();
             let changelist=[{inid:'1',value:'选项1'},{inid:'2',value:'选项2'}];
             this.single.push({

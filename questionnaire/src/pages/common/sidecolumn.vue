@@ -20,7 +20,8 @@ export default {
     name:'CommonSidecolumn',
     methods:{
         HandleClickSideChanage(){//点击'我的问卷'的图标显现
-            this.$store.commit('ChangeSide',true)
+            this.$store.commit('ChangeSide',true);
+            this.$router.push('/');
         },
         HandleClickSideChanage2(){//点击'新建问卷'的图标显现
             this.$store.commit('ChangeSide',false)

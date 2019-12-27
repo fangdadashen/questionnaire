@@ -1,6 +1,6 @@
 <template>
   <div class="title-con">
-      <input v-model="Qtitle" type="text" class="title-int">
+      <input v-model="Qtitle" placeholder="问卷题目" type="text" class="title-int">
   </div>
 </template>
 
@@ -9,7 +9,7 @@ export default {
     name:'QuestionTitle',
     data(){
         return{
-            Qtitle:'问卷题目'
+            Qtitle:''
         }
     },
     watch:{
@@ -19,7 +19,7 @@ export default {
                 localStorage.setItem(Qtitle,JSON.stringify(this.Qtitle))
             },
             //第一次初始化就监听
-            immediate:true
+            // immediate:true
         }
     },
     mounted(){

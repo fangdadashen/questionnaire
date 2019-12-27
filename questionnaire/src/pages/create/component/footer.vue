@@ -8,13 +8,11 @@
           <span 
             class="footer-button" 
             @click.prevent="Save"
-            :style="styleobject1"
           >
             保存</span>
           <span 
             class="footer-button" 
-             @click.prevent="Public"
-            :style="styleobject2"
+            @click.prevent="Public"
           >发布</span>
       </div>
   </div>
@@ -26,65 +24,47 @@ export default {
     data(){
         return{
             Qmessage:{//传到首页列表的数据
-                id:1,
-                title:'问卷题目',
-                date:'',
-                status:'未发布'
+                // id:1,
+                // title:JSON.parse(localStorage.getItem('Qtitle'+this.$route.params.id)),
+                // date:this.Qdate,
+                // status:this.Qstatus
             },
             Qid:1,
             Qdate:'',
             Qstatus:'未发布',
-            styleobject1:{},
-            styleobject2:{}
+            saveorno:false//保存与否
         }
     },
     methods:{
-        Save(e){//保存
-          if(!e.target.style.background=='#346da0'){
-              window.console.log(e)
-              let id='Qtitle'+this.$route.params.id;
+        Save(){//保存
+        //   if(!this.styleobject1.background){
+            this.saveorno=true;
             this.Qmessage={
                 id:this.Qid++,
-                title:JSON.parse(localStorage.getItem(id)),
+                title:JSON.parse(localStorage.getItem('Qtitle'+this.$route.params.id)),
                 date:this.Qdate,
                 status:this.Qstatus
             };
-            this.$store.commit('HomeBaseData',this.Qmessage);
-            this.styleobject1={
-                color:'#fff',
-                background:'#346da0'
-            }
-            let Sstyle='Sstyle'+this.$route.params.id;
-            localStorage.setItem(Sstyle,JSON.stringify(this.styleobject1))
+            window.console.log('save?',this.saveorno);
+            let obj={};//vuex只能传一个参数，因此打包成对象传过去
+            obj.id=this.$route.params.id.split('').slice(1,2).join('')-1;
+            obj.data=this.Qmessage;
+            this.$store.commit('HomeBaseData',obj);
             this.$router.push('/');
-          }else{
-            //   window.console.log(e);
-            //   this.$router.push('/');
-               return false;
-          }
+        //   }else{
+        //     this.$router.push('/');
+        //     return false;
+        //   }
         },
         Public(){//发布
-               let id='Qtitle'+this.$route.params.id;
             this.Qstatus='已发布'
-            this.Qmessage={
-                title:JSON.parse(localStorage.getItem(id)),
-                date:this.Qdate,
-                status:this.Qstatus
-            };
-            this.$store.commit('HomeBaseData',this.Qmessage);
-            this.styleobject2={
-                color:'#fff',
-                background:'#346da0'
-            }
-            let Pstyle='Pstyle'+this.$route.params.id;
-            localStorage.setItem(Pstyle,JSON.stringify(this.styleobject2))
+            alert('已发布')
         }
     },
-    mounted(){
-        let id1='Sstyle'+this.$route.params.id;
-        let id2='Pstyle'+this.$route.params.id;
-        this.styleobject1=JSON.parse(localStorage.getItem(id1))||{};
-        this.styleobject2=JSON.parse(localStorage.getItem(id2))||{};
+    created(){
+        let id=this.$route.params.id.split('').slice(1,2).join('')-1;
+        let obj=this.$store.state.listdata[id];
+        this.Qdate=obj.date;
     }
 }
 </script>

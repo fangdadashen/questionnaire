@@ -8,14 +8,14 @@
               <td>状态</td>
               <td>操作</td>
           </tr>
-           <tr class="my-tr" v-for="item of mylist" :key="item.id">
+           <tr class="my-tr" v-for="(item,index) of mylist" :key="index">
               <td class="my-choose"><input type="checkbox"></td>
               <td class="my-name">{{item.title}}</td>
               <td class="my-date">{{item.date}}</td>
               <td class="my-publish">{{item.status}}</td>
               <td class="my-handle">
                   <span class="iconfont">&#xe8d0;</span>
-                  <router-link tag='span' :to="'/create/:'+item.id" class="my-data">编辑</router-link>
+                  <router-link tag='span' :to="'/create/:'+(index+1)" class="my-data">编辑</router-link>
                   <span class="my-data">查看数据</span>
               </td>
           </tr>
