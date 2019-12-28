@@ -1,18 +1,20 @@
 <template>
   <div class="home-list">
-      <div class="list-wrapper" v-if="listshow" v-show="listshow2">
+    <div v-show="listshow" class="list-con">
+      <div class="list-wrapper" v-if="listshow2">
         <router-link :to="'/create/:'+this.$store.state.createid">
           <span class="iconfont list-icon">&#xe604;</span>
           <p class="icon-text">你还没有创建问卷</p>
         </router-link>
       </div>
-      <home-myquestionnaire v-if="listshow" v-show="!listshow2" class="myquestionnaire"></home-myquestionnaire>
-      <div class="list-wrapper" v-if="!listshow">
+      <home-myquestionnaire v-if="!listshow2" class="myquestionnaire"></home-myquestionnaire>
+    </div>
+    <div class="list-wrapper" v-show="!listshow">
         <router-link :to="'/create/:'+this.$store.state.createid">
           <span class="iconfont list-icon">&#xe606;</span>
           <p class="icon-text">创建一个新问卷</p>
         </router-link>
-      </div>
+    </div>
   </div>
 </template>
 
@@ -34,7 +36,7 @@ export default {
         return this.$store.state.SideChange
       },
       listshow2(){
-        return this.mylist.length>0?false:true;
+       return this.mylist.length>0?false:true;
       }
     }
 }
@@ -48,9 +50,11 @@ export default {
     top:60px;
     right:0;
     display: flex;
-    /* align-items: center; */
     justify-content: center;
     text-align: center;
+}
+.list-con{
+  width: 100%;
 }
 .myquestionnaire{
     flex:1;

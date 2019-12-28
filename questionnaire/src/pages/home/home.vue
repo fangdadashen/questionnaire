@@ -3,7 +3,6 @@
       <common-header>
           <login></login>
       </common-header>
-      
       <common-sidecolumn></common-sidecolumn>
       <home-list></home-list>
   </div>

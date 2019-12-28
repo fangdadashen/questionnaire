@@ -30,24 +30,23 @@ export default {
                 // status:this.Qstatus
             },
             Qid:1,
-            Qdate:'',
+            Qdate:''||'没有设置日期',
             Qstatus:'未发布',
-            saveorno:false//保存与否
+            
         }
     },
     methods:{
         Save(){//保存
         //   if(!this.styleobject1.background){
-            this.saveorno=true;
+            let id=this.$route.params.id.split('').slice(1,2).join('')-1;
             this.Qmessage={
-                id:this.Qid++,
+                id:id,
                 title:JSON.parse(localStorage.getItem('Qtitle'+this.$route.params.id)),
                 date:this.Qdate,
                 status:this.Qstatus
             };
-            window.console.log('save?',this.saveorno);
             let obj={};//vuex只能传一个参数，因此打包成对象传过去
-            obj.id=this.$route.params.id.split('').slice(1,2).join('')-1;
+            obj.id=id;
             obj.data=this.Qmessage;
             this.$store.commit('HomeBaseData',obj);
             this.$router.push('/');
@@ -61,11 +60,14 @@ export default {
             alert('已发布')
         }
     },
-    created(){
+    mounted(){
         let id=this.$route.params.id.split('').slice(1,2).join('')-1;
         let obj=this.$store.state.listdata[id];
-        this.Qdate=obj.date;
+        if(obj){
+            this.Qdate=obj.date||'没有设置日期';
+        }
     }
+        
 }
 </script>
 

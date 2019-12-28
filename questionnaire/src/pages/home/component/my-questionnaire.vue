@@ -8,17 +8,23 @@
               <td>状态</td>
               <td>操作</td>
           </tr>
-           <tr class="my-tr" v-for="(item,index) of mylist" :key="index">
-              <td class="my-choose"><input type="checkbox"></td>
+          <template v-for="(item,index) of mylist" >
+            <tr 
+             class="my-tr" 
+             :key="index"
+             v-if="mylist[item.id]"
+            >
+              <td class="my-choose"><input type="checkbox" ></td>
               <td class="my-name">{{item.title}}</td>
-              <td class="my-date">{{item.date}}</td>
-              <td class="my-publish">{{item.status}}</td>
+              <td class="my-date" ref="date">{{item.date}}</td>
+              <td class="my-publish" ref="status">{{item.status}}</td>
               <td class="my-handle">
-                  <span class="iconfont">&#xe8d0;</span>
-                  <router-link tag='span' :to="'/create/:'+(index+1)" class="my-data">编辑</router-link>
-                  <span class="my-data">查看数据</span>
+                  <span class="iconfont" @click="HandleRemoveList(index)">&#xe8d0;</span>
+                  <router-link tag='span' :to="'/create/:'+(item.id+1)" class="my-data">编辑</router-link>
+                  <span class="my-data" ref="lookdata">查看数据</span>
               </td>
-          </tr>
+            </tr>
+          </template>
           <tr class="my-tr">
               <td class="my-footer">
                 <span>全选</span>
@@ -42,19 +48,49 @@ export default {
             //         status:'已发布'
             //     },
             // ],
-            mylist:this.$store.state.listdata
+            mylist:this.$store.state.listdata,
+            // checklist:[]
+        }
+    },
+    methods:{
+        HandleRemoveList(index){
+            this.mylist.splice(index,1);
+            this.mylist.splice(index,0,false)
+            this.$store.commit('HomeListChange',this.mylist)
+            localStorage.removeItem(['single:'+(index+1)])
+            localStorage.removeItem(['Qtitle:'+(index+1)])
         }
     },
     watch:{
         mylist:{
-            handler(){//为新建问卷功能传值 
+            handler(){
+                this.mylist.forEach(val=>{//如果数组全部为false,则数组清空
+                    if(val==false){
+                        this.$store.commit('HomeListChange',[])
+                    }
+                })
+                //为新建问卷功能传值
                 this.$store.commit('ChangeCreateId',this.mylist.length)
             },
-            immediate:true
+            immediate:true,
         }
     },
     mounted(){
-        window.console.log(this.list)
+        if(this.$refs.date){
+            this.$refs.date.forEach((val,index)=>{//判断是否设置日期 
+                if(val.innerText.indexOf('没有')>-1){
+                    this.$refs.date[index].style.color='#f15b29';
+                }
+            })
+        }
+        if(this.$refs.status){
+             this.$refs.status.forEach((val,index)=>{//判断是否发布
+                if(val.innerText.indexOf('未')>-1){
+                    this.$refs.status[index].style.color='#b4b4b6';
+                }
+            })
+        }
+        window.console.log(this.checklist)
     }
 }
 </script>
@@ -65,7 +101,6 @@ export default {
 }
 .my-table{
     width: 90%;
-    /* background: teal; */
     text-align: center;
     margin-left:5%;
 }
@@ -82,7 +117,11 @@ export default {
     width:15%;
 }
 .my-name{
+    max-width:100px;
     color:#018fe5;
+    overflow: hidden;
+    white-space:nowrap;
+    text-overflow: ellipsis;
 }
 .my-date{
     color: #99ba35;
