@@ -27,7 +27,8 @@ export default {
                 // id:1,
                 // title:JSON.parse(localStorage.getItem('Qtitle'+this.$route.params.id)),
                 // date:this.Qdate,
-                // status:this.Qstatus
+                // status:this.Qstatus,
+                // check:false
             },
             Qid:1,
             Qdate:''||'没有设置日期',
@@ -43,7 +44,8 @@ export default {
                 id:id,
                 title:JSON.parse(localStorage.getItem('Qtitle'+this.$route.params.id)),
                 date:this.Qdate,
-                status:this.Qstatus
+                status:this.Qstatus,
+                check:false
             };
             let obj={};//vuex只能传一个参数，因此打包成对象传过去
             obj.id=id;

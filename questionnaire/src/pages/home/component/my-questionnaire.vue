@@ -14,7 +14,12 @@
              :key="index"
              v-if="mylist[item.id]"
             >
-              <td class="my-choose"><input type="checkbox" ></td>
+              <td class="my-choose">
+                  <input 
+                    type="checkbox" 
+                    :checked='item.check'
+                  >
+              </td>
               <td class="my-name">{{item.title}}</td>
               <td class="my-date" ref="date">{{item.date}}</td>
               <td class="my-publish" ref="status">{{item.status}}</td>
@@ -27,8 +32,9 @@
           </template>
           <tr class="my-tr">
               <td class="my-footer">
-                <span>全选</span>
-                <span>删除</span>
+                <span @click="checkAll" v-show="checkshow">全选</span>
+                <span @click="nocheckAll" v-show="!checkshow">全不选</span>
+                <span @click="Removecheck">删除</span>
               </td>
           </tr>
       </table>
@@ -45,20 +51,41 @@ export default {
             //         id:1,
             //         title:'问卷题目',
             //         date:'2019-12-25',
-            //         status:'已发布'
+            //         status:'已发布',
+            //         check:false
             //     },
             // ],
             mylist:this.$store.state.listdata,
-            // checklist:[]
+            checkshow:true//全选/全不选按钮的显现
         }
     },
     methods:{
-        HandleRemoveList(index){
+        HandleRemoveList(index){//删除图标功能实现
             this.mylist.splice(index,1);
             this.mylist.splice(index,0,false)
             this.$store.commit('HomeListChange',this.mylist)
             localStorage.removeItem(['single:'+(index+1)])
             localStorage.removeItem(['Qtitle:'+(index+1)])
+        },
+        checkAll(){//全选
+            this.mylist.forEach(val=>{
+                val.check=true;
+                this.checkshow=false;
+            })
+        },
+        nocheckAll(){//全不选
+            this.mylist.forEach(val=>{
+                val.check=false;
+                this.checkshow=true;
+            })
+        },
+        Removecheck(){//删除选中的
+            this.mylist.forEach((val,index)=>{
+                if(val.check==true){
+                    this.HandleRemoveList(index)
+                }
+                window.console.log(this.mylist)
+            })
         }
     },
     watch:{
@@ -90,7 +117,7 @@ export default {
                 }
             })
         }
-        window.console.log(this.checklist)
+        window.console.log(this.mylist)
     }
 }
 </script>
