@@ -14,7 +14,7 @@
           </div>
         </div>
         <div class="clear-wrapper">
-            <div class="clear">清除数据</div>
+            <div class="clear">以上仅做展示</div>
         </div>
       </div>
   </div>
@@ -28,7 +28,7 @@ export default {
             title:'',
             chartdata:[{
                 id:'1',
-                title:'你给楼主打多少分',
+                title:'你给楼主打多少分(单选)',
                 type:'1',
                 changelist:[
                     {value:3, name:'100'},
@@ -38,15 +38,15 @@ export default {
                 ],
             },{
                 id:'2',
-                title:'你觉得有人能比楼主帅吗',
+                title:'你觉得有人能比楼主帅吗(多选)',
                 type:'2',
-                name: ["你在开玩笑吗", "绝对不可能", "谁给你的勇气冒出这种异想天开的幻想"],
+                name: ["你在开玩笑吗", "绝对不可能", "这还用问？"],
                 number:[10, 5, 7]
             },{
                 id:'3',
-                title:'请用600字表达你对楼主的敬仰之情',
+                title:'请用600字表达你对楼主的敬仰之情(文本题)',
                 type:'3',
-                value:['这里是内容...',222222222,333333333333]
+                value:['楼主好帅','楼主太帅了','楼主666']
             }],
         }
     },
@@ -157,6 +157,7 @@ export default {
   height: 200px;
   width: 100%;
   overflow: auto;
+  margin:0 auto;
 }
 .chart>p{
   font-size: 1.3em;

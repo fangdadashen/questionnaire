@@ -101,7 +101,7 @@ export default {
     name:'CreateAdd',
     data(){
         return{
-            //创建单选题
+            //创建选题
             single:[
                 // {
                 //     id:'1',
@@ -185,7 +185,6 @@ export default {
         //创建一个新文本选题
         CreateChangeTextareaList(){
             this.sorted();
-             window.console.log(this.checked,123);
             let changelist=[{textareavalue:'',necessary:this.checked,textprompt:false}];
             this.single.push({
                 id:this.singleid++,
@@ -194,7 +193,7 @@ export default {
                 changelist:changelist
             })
         },
-        // //删除指定选题
+        //删除指定选题
         RemoveChangeSingleList(id){
             this.single.splice(id,1);
         },

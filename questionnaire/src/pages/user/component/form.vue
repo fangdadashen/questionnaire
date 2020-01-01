@@ -57,7 +57,7 @@ export default {
     data(){
       return{
         title:'',
-        userlist:[//同步数据格式参考
+        userlist:[//同步数据格式参考，本页缓存数据
           // {
           //   id:'1',
           //   title:'题目1',
@@ -86,7 +86,7 @@ export default {
           // }
         ],
         textarea:'',
-        save:false
+        save:false,
       }
     },
     methods:{
@@ -97,7 +97,6 @@ export default {
         this.userlist.forEach(val=>{//必填文本题判断以及是否填写
           val.changelist.forEach(val=>{
             if(val.necessary&&!val.textareavalue){
-              window.console.log(val.necessary,12354645);
               val.necessary='这里还没有填哦',
               val.textprompt=true;
             }else if(val.necessary&&val.textareavalue){
