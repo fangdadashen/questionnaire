@@ -3,7 +3,7 @@
 #### 介绍
 vue实现调查问卷平台
 
-demo展示:https://fangdadashen.github.io/questionnaire/questionnaire/dist/index#/
+<a href='https://fangdadashen.github.io/questionnaire/questionnaire/dist/index#/'>demo展示</a>
 
 任务描述
 
