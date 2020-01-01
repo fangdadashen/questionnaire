@@ -56,6 +56,7 @@
               <div v-else-if="item.type==3">
                 <textarea 
                   class="textarea" 
+                  placeholder="请在此填写内容"
                   v-model="list.textareavalue"
                 >
                 </textarea>
@@ -63,7 +64,7 @@
                     <input 
                       @click="HandleChecked" 
                       type="checkbox" 
-                      v-model=list.value
+                      v-model='list.necessary'
                     >
                     <span>是否必填</span>
                 </label>
@@ -102,32 +103,32 @@ export default {
         return{
             //创建单选题
             single:[
-                {
-                    id:'1',
-                    title:'题目1',
-                    type:'1',
-                    changelist:[
-                        {inid:'1',value:'选项1'},
-                        {inid:'2',value:'选项2'}
-                    ],
-                },
-                {
-                    id:'2',
-                    title:'题目2',
-                    type:'2',
-                    changelist:[
-                        {inid:'1',value:'选项1'},
-                        {inid:'2',value:'选项2'}
-                    ],
-                },
-                {
-                    id:'3',
-                    title:'题目2',
-                    type:'3',
-                    changelist:[
-                        {textareavalue:'',value:[]},
-                    ],
-                }
+                // {
+                //     id:'1',
+                //     title:'题目1',
+                //     type:'1',
+                //     changelist:[
+                //         {inid:'1',value:'选项1',check:false},
+                //         {inid:'2',value:'选项2',check:false}
+                //     ],
+                // },
+                // {
+                //     id:'2',
+                //     title:'题目2',
+                //     type:'2',
+                //     changelist:[
+                //         {inid:'1',value:'选项1',check:false},
+                //         {inid:'2',value:'选项2',check:false}
+                //     ],
+                // },
+                // {
+                //     id:'3',
+                //     title:'题目2',
+                //     type:'3',
+                //     changelist:[
+                //         {textareavalue:'',necessary:[],textprompt:false},
+                //     ],
+                // }
             ],
             singleid:1,
             singletitle:'题目',
@@ -167,7 +168,7 @@ export default {
         //创建一个新单/多选题
         CreateChangeSingleList(){
             this.sorted();
-            let changelist=[{inid:'1',value:'选项1'},{inid:'2',value:'选项2'}];
+            let changelist=[{inid:'1',value:'选项1',check:false},{inid:'2',value:'选项2',check:false}];
             this.single.push({
                 id:this.singleid++,
                 title:this.singletitle+(this.singleid-1),
@@ -179,13 +180,13 @@ export default {
         HandleChecked(e){
             if(e.target.checked){
                 this.checked='必填'
-                window.console.log(this.checked);
             }
         },
         //创建一个新文本选题
         CreateChangeTextareaList(){
             this.sorted();
-            let changelist=[{textareavalue:'',value:this.checked}];
+             window.console.log(this.checked,123);
+            let changelist=[{textareavalue:'',necessary:this.checked,textprompt:false}];
             this.single.push({
                 id:this.singleid++,
                 title:this.singletitle+(this.singleid-1),
@@ -281,7 +282,7 @@ export default {
     mounted(){
         //页面加载或刷新时把存在本地的数据赋予
         let id='single'+this.$route.params.id;
-       this.single=JSON.parse(localStorage.getItem(id))||[];
+        this.single=JSON.parse(localStorage.getItem(id))||[];
     }
 }
 </script>
@@ -310,7 +311,6 @@ export default {
     font-size: 1.2em;
 }
 .select-wrapper{
-    /* min-width:350px; */
     background: #fff;
     text-align:center;
     display: flex;
@@ -355,7 +355,6 @@ export default {
     padding:3px 5px;
     color:rgb(151, 148, 148);
     border-radius: 3px;
-    /* background: #eee; */
 }
 .add-title-wrapper .info-title:hover{
     background: rgba(255, 68, 0, 0.158);
@@ -384,9 +383,9 @@ export default {
     color:#018fe5 ;
 }
 .add-info-warrper .info-change-list{
-    /* background: red; */
     display: inline-block;
     width:85%;
+
 }
 .info-change-list .change-list{
     box-sizing: border-box;

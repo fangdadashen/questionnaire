@@ -6,12 +6,13 @@
       </div>
       <div class="f-button">
           <span 
-            class="footer-button" 
+            class="footer-button"
             @click.prevent="Save"
           >
-            保存</span>
+            保存
+          </span>
           <span 
-            class="footer-button" 
+            class="footer-button"
             @click.prevent="Public"
           >发布</span>
       </div>
@@ -28,34 +29,30 @@ export default {
                 // title:JSON.parse(localStorage.getItem('Qtitle'+this.$route.params.id)),
                 // date:this.Qdate,
                 // status:this.Qstatus,
-                // check:false
+                // check:false,//是否选中
+                // button:true//根据状态判断显示哪些button
             },
             Qid:1,
             Qdate:''||'没有设置日期',
             Qstatus:'未发布',
-            
         }
     },
     methods:{
         Save(){//保存
-        //   if(!this.styleobject1.background){
             let id=this.$route.params.id.split('').slice(1,2).join('')-1;
             this.Qmessage={
                 id:id,
                 title:JSON.parse(localStorage.getItem('Qtitle'+this.$route.params.id)),
                 date:this.Qdate,
                 status:this.Qstatus,
-                check:false
+                check:false,
+                button:true
             };
             let obj={};//vuex只能传一个参数，因此打包成对象传过去
             obj.id=id;
             obj.data=this.Qmessage;
             this.$store.commit('HomeBaseData',obj);
             this.$router.push('/');
-        //   }else{
-        //     this.$router.push('/');
-        //     return false;
-        //   }
         },
         Public(){//发布
             this.Qstatus='已发布'

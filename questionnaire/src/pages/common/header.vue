@@ -30,7 +30,7 @@ export default {
 .header-logo{
     padding-left:2em;
     left:2em;
-    background: url('C:/Users/Administrator/Desktop/vue-wenjuan/questionnaire/src/assets/img/logo.png') no-repeat left;
+    background: url('../../assets/img/logo.png') no-repeat left;
     background-size:30px 30px; 
 }
 </style>

@@ -25,8 +25,29 @@
               <td class="my-publish" ref="status">{{item.status}}</td>
               <td class="my-handle">
                   <span class="iconfont" @click="HandleRemoveList(index)">&#xe8d0;</span>
-                  <router-link tag='span' :to="'/create/:'+(item.id+1)" class="my-data">编辑</router-link>
-                  <span class="my-data" ref="lookdata">查看数据</span>
+                  <router-link 
+                    tag='span' 
+                    :to="'/create/:'+(item.id+1)" 
+                    class="my-data"
+                    v-if="item.button"
+                  >
+                    编辑
+                  </router-link>
+                  <router-link 
+                    tag='span'
+                    :to="'/totalquantity/:'+(item.id+1)"
+                    class="my-data" 
+                    v-if="!item.button"
+                  >
+                    查看数据
+                  </router-link>
+                  <router-link 
+                    tag='span' 
+                    :to="'/user/:'+(item.id+1)" 
+                    class="my-data"
+                  >
+                    查看问卷
+                  </router-link>
               </td>
             </tr>
           </template>
@@ -52,11 +73,13 @@ export default {
             //         title:'问卷题目',
             //         date:'2019-12-25',
             //         status:'已发布',
-            //         check:false
+            //         check:false,
+            //         button:true
             //     },
             // ],
             mylist:this.$store.state.listdata,
-            checkshow:true//全选/全不选按钮的显现
+            checkshow:true,//全选/全不选按钮的显现
+    
         }
     },
     methods:{
@@ -84,7 +107,6 @@ export default {
                 if(val.check==true){
                     this.HandleRemoveList(index)
                 }
-                window.console.log(this.mylist)
             })
         }
     },
@@ -103,21 +125,29 @@ export default {
         }
     },
     mounted(){
+        //判断是否设置日期
         if(this.$refs.date){
-            this.$refs.date.forEach((val,index)=>{//判断是否设置日期 
+            this.$refs.date.forEach((val,index)=>{ 
                 if(val.innerText.indexOf('没有')>-1){
                     this.$refs.date[index].style.color='#f15b29';
                 }
             })
         }
-        if(this.$refs.status){
-             this.$refs.status.forEach((val,index)=>{//判断是否发布
+        //判断是否发布
+        if(this.$refs.status){//颜色
+             this.$refs.status.forEach((val,index)=>{
                 if(val.innerText.indexOf('未')>-1){
-                    this.$refs.status[index].style.color='#b4b4b6';
+                    this.$refs.status[index].style.color='#b4b4b6'; 
                 }
             })
         }
-        window.console.log(this.mylist)
+        this.mylist.forEach(val=>{//按钮
+            if(val.status=='未发布'){
+                val.button=true;
+            }else{
+                val.button=false;
+            }
+        })
     }
 }
 </script>

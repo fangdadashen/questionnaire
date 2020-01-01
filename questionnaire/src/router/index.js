@@ -1,7 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '@/pages/home/home.vue'
-import Create from '@/pages/create/create.vue'
 
 Vue.use(VueRouter)
 
@@ -9,13 +7,23 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: Home
+    component:() => import('@/pages/home/home.vue')
   },
   {
     path: '/create/:id',
     name: 'create',
-    component: Create
+    component: () => import('@/pages/create/create.vue')
   },
+  {
+    path: '/user/:id',
+    name: 'user',
+    component: () => import('@/pages/user/user.vue')
+  },
+  {
+    path: '/totalquantity/:id',
+    name: 'totalquantity',
+    component: () => import('@/pages/totalquantity/totalquantity.vue')
+  }
   
 ]
 

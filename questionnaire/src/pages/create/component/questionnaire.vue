@@ -1,7 +1,7 @@
 <template>
   <div class="q-wrapper">
       <div class="q-con">
-        <question-title class="q-title"></question-title>
+        <question-title></question-title>
         <div>
           <create-add></create-add>
         </div>
@@ -43,5 +43,4 @@ export default {
   padding:0 10px;
   box-shadow: 0 0 8px 8px rgb(226, 225, 225);
 }
-
 </style>
